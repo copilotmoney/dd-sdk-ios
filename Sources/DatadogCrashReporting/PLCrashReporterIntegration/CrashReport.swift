@@ -283,7 +283,7 @@ extension BinaryImageInfo.CodeType {
         let subtypeMask = UInt64(CPU_SUBTYPE_MASK)
 
         // Ref. for this check:
-        // https://github.com/microsoft/plcrashreporter/blob/dbb05c0bc883bde1cfcad83e7add25862c95d11f/Source/PLCrashReportTextFormatter.m#L371
+        // https://github.com/microsoft/plcrashreporter/blob/master/Source/PLCrashReportTextFormatter.m#L371
         switch type {
         case UInt64(CPU_TYPE_X86):      self.architectureName = "i386"
         case UInt64(CPU_TYPE_X86_64):   self.architectureName = "x86_64"

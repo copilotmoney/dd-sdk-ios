@@ -89,9 +89,11 @@ internal class CrashReporter {
         queue.async {
             self.plugin.readPendingCrashReport { [weak self] crashReport in
                 guard let self = self, let availableCrashReport = crashReport else {
+                    userLogger.debug("No pending crash available")
                     return false
                 }
 
+                userLogger.debug("Loaded pending crash report")
 #if DD_SDK_ENABLE_INTERNAL_MONITORING
                 InternalMonitoringFeature.instance?.monitor.sdkLogger
                     .debug("Loaded pending crash report", attributes: availableCrashReport.diagnosticInfo)
@@ -135,9 +137,8 @@ internal class CrashReporter {
                 """
                 Failed to encode crash report context. The app state information associated with eventual crash
                 report may be not in sync with the current state of the application.
-
-                Error details: \(error)
-                """
+                """,
+                error: error
             )
             InternalMonitoringFeature.instance?.monitor.sdkLogger
                 .error("Failed to encode crash report context", error: error)
@@ -153,9 +154,8 @@ internal class CrashReporter {
                 """
                 Failed to decode crash report context. The app state information associated with the crash
                 report won't be in sync with the state of the application when it crashed.
-
-                Error details: \(error)
-                """
+                """,
+                error: error
             )
 #if DD_SDK_ENABLE_INTERNAL_MONITORING
             let contextUTF8String = String(data: crashContextData, encoding: .utf8)

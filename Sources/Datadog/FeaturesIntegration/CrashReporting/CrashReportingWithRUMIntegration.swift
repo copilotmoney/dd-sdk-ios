@@ -101,7 +101,7 @@ internal struct CrashReportingWithRUMIntegration: CrashReportingIntegration {
         } else {
             // We know it is too late for sending RUM view to previous RUM session as it is now stale on backend.
             // To avoid inconsistency, we only send the RUM error.
-            userLogger.debug("Report the crash as error.")
+            userLogger.debug("Sending crash as RUM error.")
             let rumError = createRUMError(from: crashReport, and: lastRUMViewEvent, crashDate: crashTimings.realCrashDate)
             rumEventOutput.write(rumEvent: rumError)
         }
@@ -203,7 +203,7 @@ internal struct CrashReportingWithRUMIntegration: CrashReportingIntegration {
 
     /// Sends given `CrashReport` by linking it to given `rumView` and updating view counts accordingly.
     private func send(crashReport: DDCrashReport, to rumView: RUMEvent<RUMViewEvent>, using realCrashDate: Date) {
-        userLogger.debug("Update view with crash report.")
+        userLogger.debug("Updating RUM view with crash report.")
         let updatedRUMView = updateRUMViewWithNewError(rumView, crashDate: realCrashDate)
         let rumError = createRUMError(from: crashReport, and: updatedRUMView, crashDate: realCrashDate)
         rumEventOutput.write(rumEvent: rumError)

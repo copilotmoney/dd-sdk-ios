@@ -137,8 +137,9 @@ internal class CrashReporter {
                 """
                 Failed to encode crash report context. The app state information associated with eventual crash
                 report may be not in sync with the current state of the application.
-                """,
-                error: error
+
+                Error details: \(error)
+                """
             )
             InternalMonitoringFeature.instance?.monitor.sdkLogger
                 .error("Failed to encode crash report context", error: error)
@@ -154,8 +155,9 @@ internal class CrashReporter {
                 """
                 Failed to decode crash report context. The app state information associated with the crash
                 report won't be in sync with the state of the application when it crashed.
-                """,
-                error: error
+
+                Error details: \(error)
+                """
             )
 #if DD_SDK_ENABLE_INTERNAL_MONITORING
             let contextUTF8String = String(data: crashContextData, encoding: .utf8)

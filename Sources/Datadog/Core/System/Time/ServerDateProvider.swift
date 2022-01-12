@@ -34,31 +34,31 @@ internal class NTPServerDateProvider: ServerDateProvider {
     }
 
     func synchronize(with pool: String, completion: @escaping (TimeInterval?) -> Void) {
-        KronosClock.sync(
-            from: pool,
-            monitor: kronosMonitor,
-            first: { [weak self] _, offset in
-                self?.publisher.publishAsync(offset)
-            },
-            completion: { [weak self] now, offset in
-                guard let self = self else {
-                    return
-                }
-
-                // Kronos only notifies for the first and last samples.
-                // In case, the last sample does not return an offset, we calculate the offset
-                // from the returned `now` parameter. The `now` parameter in this callback
-                // is `Clock.now` and it can be either offset computed from prior samples or persisted
-                // in user defaults from previous app session.
-                if let offset = offset {
-                    self.publisher.publishAsync(offset)
-                } else if let now = now {
-                    self.publisher.publishAsync(now.timeIntervalSinceNow)
-                }
-
-                completion(self.publisher.currentValue)
-            }
-        )
+//        KronosClock.sync(
+//            from: pool,
+//            monitor: kronosMonitor,
+//            first: { [weak self] _, offset in
+//                self?.publisher.publishAsync(offset)
+//            },
+//            completion: { [weak self] now, offset in
+//                guard let self = self else {
+//                    return
+//                }
+//
+//                // Kronos only notifies for the first and last samples.
+//                // In case, the last sample does not return an offset, we calculate the offset
+//                // from the returned `now` parameter. The `now` parameter in this callback
+//                // is `Clock.now` and it can be either offset computed from prior samples or persisted
+//                // in user defaults from previous app session.
+//                if let offset = offset {
+//                    self.publisher.publishAsync(offset)
+//                } else if let now = now {
+//                    self.publisher.publishAsync(now.timeIntervalSinceNow)
+//                }
+//
+//                completion(self.publisher.currentValue)
+//            }
+//        )
 
         // `Kronos.sync` first loads the previous state from the `UserDefaults` if any.
         // We can invoke `Clock.now` to retrieve the stored offset.
